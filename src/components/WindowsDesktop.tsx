@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
+import InfinityProxy from "./InfinityProxy";
 
 const WindowsDesktop = () => {
   const [time, setTime] = useState(new Date());
+  const [proxyOpen, setProxyOpen] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => setTime(new Date()), 1000);
@@ -23,6 +25,42 @@ const WindowsDesktop = () => {
           className="absolute inset-0 w-full h-full object-cover"
           src="/wallpaper.mov"
         />
+
+        {/* Desktop icons */}
+        <div className="absolute top-4 left-4 flex flex-col gap-4 z-[1]">
+          {/* Granny app */}
+          <button className="flex flex-col items-center gap-1 w-20 group">
+            <div className="w-14 h-14 rounded-lg overflow-hidden shadow-lg group-hover:ring-2 ring-foreground/30 transition-all">
+              <img src="/granny-icon.png" alt="Granny" className="w-full h-full object-cover" />
+            </div>
+            <span className="text-[11px] text-foreground drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] font-medium">
+              Granny
+            </span>
+          </button>
+        </div>
+
+        {/* Center Infinity logo - white glowing */}
+        <div className="absolute inset-0 flex items-center justify-center z-[1] pointer-events-none">
+          <svg width="100" height="60" viewBox="0 0 32 18" fill="none" className="drop-shadow-[0_0_20px_rgba(255,255,255,0.6)]">
+            <defs>
+              <filter id="glowWhite">
+                <feGaussianBlur stdDeviation="2" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+            <path
+              d="M8 3C4 3 1 6 1 9s3 6 7 6c2.5 0 4.5-1.2 6-3l2-3 2 3c1.5 1.8 3.5 3 6 3 4 0 7-3 7-6s-3-6-7-6c-2.5 0-4.5 1.2-6 3l-2 3-2-3C12.5 4.2 10.5 3 8 3z"
+              stroke="white"
+              strokeWidth="1.8"
+              fill="none"
+              filter="url(#glowWhite)"
+            />
+          </svg>
+        </div>
       </div>
 
       {/* Taskbar */}
@@ -45,6 +83,29 @@ const WindowsDesktop = () => {
           </svg>
           <span className="text-xs text-muted-foreground">Search</span>
         </div>
+
+        {/* Pinned Infinity Proxy in taskbar */}
+        <button
+          onClick={() => setProxyOpen(true)}
+          className="ml-3 h-10 px-3 flex items-center gap-2 rounded hover:bg-foreground/10 transition-colors"
+          title="Infinity Proxy"
+        >
+          <svg width="18" height="12" viewBox="0 0 32 18" fill="none">
+            <defs>
+              <linearGradient id="taskbarFire" x1="0" y1="18" x2="0" y2="0">
+                <stop offset="0%" stopColor="#ff4500" />
+                <stop offset="50%" stopColor="#ff8c00" />
+                <stop offset="100%" stopColor="#ffd700" />
+              </linearGradient>
+            </defs>
+            <path
+              d="M8 3C4 3 1 6 1 9s3 6 7 6c2.5 0 4.5-1.2 6-3l2-3 2 3c1.5 1.8 3.5 3 6 3 4 0 7-3 7-6s-3-6-7-6c-2.5 0-4.5 1.2-6 3l-2 3-2-3C12.5 4.2 10.5 3 8 3z"
+              stroke="url(#taskbarFire)"
+              strokeWidth="2"
+              fill="none"
+            />
+          </svg>
+        </button>
 
         {/* Spacer */}
         <div className="flex-1" />
@@ -69,6 +130,9 @@ const WindowsDesktop = () => {
           <span className="text-[10px] text-taskbar-foreground/70">{formattedDate}</span>
         </button>
       </div>
+
+      {/* Proxy overlay */}
+      {proxyOpen && <InfinityProxy onClose={() => setProxyOpen(false)} />}
     </div>
   );
 };
