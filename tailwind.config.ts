@@ -47,6 +47,11 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        taskbar: {
+          DEFAULT: "hsl(var(--taskbar))",
+          foreground: "hsl(var(--taskbar-foreground))",
+        },
+        "win-blue": "hsl(var(--win-blue))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
