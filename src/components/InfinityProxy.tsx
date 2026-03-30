@@ -10,12 +10,10 @@ const InfinityProxy = ({ onClose }: { onClose: () => void }) => {
     let target = url.trim();
     if (!target) return;
 
-    // If it looks like a URL, use it directly through a proxy
     if (target.includes(".") && !target.includes(" ")) {
       if (!target.startsWith("http")) target = "https://" + target;
       setCurrentUrl(`https://www.google.com/search?igu=1&q=${encodeURIComponent(target)}`);
     } else {
-      // Search query
       setCurrentUrl(`https://www.google.com/search?igu=1&q=${encodeURIComponent(target)}`);
     }
   };
@@ -25,7 +23,6 @@ const InfinityProxy = ({ onClose }: { onClose: () => void }) => {
       {/* Title bar */}
       <div className="h-10 flex items-center px-3 gap-3 shrink-0" style={{ background: "#111" }}>
         <div className="flex items-center gap-2">
-          {/* Fire infinity icon */}
           <svg width="22" height="14" viewBox="0 0 32 18" fill="none">
             <defs>
               <linearGradient id="fireGrad" x1="0" y1="18" x2="0" y2="0">
@@ -41,14 +38,7 @@ const InfinityProxy = ({ onClose }: { onClose: () => void }) => {
               fill="none"
             />
           </svg>
-          <span
-            className="text-sm font-bold tracking-wide"
-            style={{
-              background: "linear-gradient(180deg, #ffd700 0%, #ff8c00 40%, #ff4500 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            }}
-          >
+          <span className="proxy-fire-text text-sm font-bold tracking-wide">
             Infinity Proxy
           </span>
         </div>
@@ -81,7 +71,6 @@ const InfinityProxy = ({ onClose }: { onClose: () => void }) => {
       <div className="flex-1 relative">
         {!currentUrl ? (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-6">
-            {/* Big infinity logo */}
             <svg width="120" height="70" viewBox="0 0 32 18" fill="none">
               <defs>
                 <linearGradient id="fireGradBig" x1="0" y1="18" x2="0" y2="0">
@@ -105,14 +94,7 @@ const InfinityProxy = ({ onClose }: { onClose: () => void }) => {
                 filter="url(#fireGlow)"
               />
             </svg>
-            <h1
-              className="text-3xl font-bold tracking-wider"
-              style={{
-                background: "linear-gradient(180deg, #ffd700 0%, #ff8c00 40%, #ff4500 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}
-            >
+            <h1 className="proxy-fire-text text-3xl font-bold tracking-wider">
               Infinity Proxy
             </h1>
             <p className="text-sm" style={{ color: "#555" }}>

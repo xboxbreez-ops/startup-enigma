@@ -125,3 +125,32 @@ All colors MUST be HSL.
 .animate-shake {
   animation: shake 0.4s ease-in-out;
 }
+
+/* Fire text effect - shaped flames using SVG filter trick */
+.proxy-fire-text {
+  background: linear-gradient(
+    0deg,
+    #ff4500 0%,
+    #ff6a00 20%,
+    #ff8c00 40%,
+    #ffaa00 60%,
+    #ffd700 80%,
+    #ffed80 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: url(#flameFilter);
+  text-shadow: none;
+}
+
+@keyframes flicker {
+  0%, 100% { filter: brightness(1) drop-shadow(0 -2px 4px #ff4500) drop-shadow(0 -4px 8px #ff8c0066); }
+  25% { filter: brightness(1.1) drop-shadow(0 -3px 6px #ff6a00) drop-shadow(0 -6px 10px #ffd70044); }
+  50% { filter: brightness(0.95) drop-shadow(0 -2px 5px #ff4500) drop-shadow(0 -5px 12px #ff8c0055); }
+  75% { filter: brightness(1.05) drop-shadow(0 -4px 7px #ff6a00) drop-shadow(0 -3px 9px #ffd70033); }
+}
+
+.proxy-fire-text {
+  animation: flicker 1.5s ease-in-out infinite;
+}
