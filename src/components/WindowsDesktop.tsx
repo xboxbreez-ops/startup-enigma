@@ -5,7 +5,13 @@ import VirtualPet from "./VirtualPet";
 const WindowsDesktop = () => {
   const [time, setTime] = useState(new Date());
   const [proxyOpen, setProxyOpen] = useState(false);
+  const [proxyInitialUrl, setProxyInitialUrl] = useState<string | undefined>();
   const [petActive, setPetActive] = useState(false);
+
+  const openProxy = (url?: string) => {
+    setProxyInitialUrl(url);
+    setProxyOpen(true);
+  };
 
   useEffect(() => {
     const interval = setInterval(() => setTime(new Date()), 1000);
