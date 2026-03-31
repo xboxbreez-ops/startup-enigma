@@ -150,7 +150,7 @@ const WindowsDesktop = () => {
 
         {/* Pinned Infinity Proxy in taskbar */}
         <button
-          onClick={() => setProxyOpen(true)}
+          onClick={() => openProxy()}
           className="ml-3 h-10 px-3 flex items-center gap-2 rounded hover:bg-foreground/10 transition-colors"
           title="Infinity Proxy"
         >
