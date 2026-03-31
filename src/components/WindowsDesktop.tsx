@@ -196,7 +196,7 @@ const WindowsDesktop = () => {
       </div>
 
       {/* Proxy overlay */}
-      {proxyOpen && <InfinityProxy onClose={() => setProxyOpen(false)} />}
+      {proxyOpen && <InfinityProxy onClose={() => setProxyOpen(false)} initialUrl={proxyInitialUrl} />}
     </div>
   );
 };
