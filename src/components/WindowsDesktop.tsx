@@ -47,7 +47,7 @@ const WindowsDesktop = () => {
           </button>
 
           {/* Roblox app */}
-          <button className="flex flex-col items-center gap-1 w-20 group">
+          <button onClick={() => openProxy("https://now.gg/apps/a/19900/b.html")} className="flex flex-col items-center gap-1 w-20 group">
             <div className="w-14 h-14 rounded-lg overflow-hidden shadow-lg group-hover:ring-2 ring-foreground/30 transition-all">
               <img src="/roblox-icon.png" alt="Roblox" className="w-full h-full object-cover" />
             </div>
