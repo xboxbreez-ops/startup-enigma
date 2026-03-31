@@ -5,7 +5,13 @@ import VirtualPet from "./VirtualPet";
 const WindowsDesktop = () => {
   const [time, setTime] = useState(new Date());
   const [proxyOpen, setProxyOpen] = useState(false);
+  const [proxyInitialUrl, setProxyInitialUrl] = useState<string | undefined>();
   const [petActive, setPetActive] = useState(false);
+
+  const openProxy = (url?: string) => {
+    setProxyInitialUrl(url);
+    setProxyOpen(true);
+  };
 
   useEffect(() => {
     const interval = setInterval(() => setTime(new Date()), 1000);
@@ -41,7 +47,7 @@ const WindowsDesktop = () => {
           </button>
 
           {/* Roblox app */}
-          <button className="flex flex-col items-center gap-1 w-20 group">
+          <button onClick={() => openProxy("https://now.gg/apps/a/19900/b.html")} className="flex flex-col items-center gap-1 w-20 group">
             <div className="w-14 h-14 rounded-lg overflow-hidden shadow-lg group-hover:ring-2 ring-foreground/30 transition-all">
               <img src="/roblox-icon.png" alt="Roblox" className="w-full h-full object-cover" />
             </div>
@@ -144,7 +150,7 @@ const WindowsDesktop = () => {
 
         {/* Pinned Infinity Proxy in taskbar */}
         <button
-          onClick={() => setProxyOpen(true)}
+          onClick={() => openProxy()}
           className="ml-3 h-10 px-3 flex items-center gap-2 rounded hover:bg-foreground/10 transition-colors"
           title="Infinity Proxy"
         >
@@ -190,7 +196,7 @@ const WindowsDesktop = () => {
       </div>
 
       {/* Proxy overlay */}
-      {proxyOpen && <InfinityProxy onClose={() => setProxyOpen(false)} />}
+      {proxyOpen && <InfinityProxy onClose={() => setProxyOpen(false)} initialUrl={proxyInitialUrl} />}
     </div>
   );
 };

@@ -1,21 +1,104 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 
-const InfinityProxy = ({ onClose }: { onClose: () => void }) => {
-  const [url, setUrl] = useState("");
+const HACKER_LINES = [
+  "Initializing secure tunnel...",
+  "Bypassing firewall [████████░░] 80%",
+  "Encrypting packet headers...",
+  "Spoofing DNS resolution...",
+  "Routing through proxy node 4.12.88.201",
+  "Establishing TLS handshake...",
+  "Injecting auth tokens...",
+  "Masking IP address...",
+  "Decrypting SSL certificates...",
+  "Connection secured ✓",
+  "Bypassing firewall [██████████] 100%",
+  "Tunnel established. Loading target...",
+];
+
+const HackerLoading = ({ onDone }: { onDone: () => void }) => {
+  const [lines, setLines] = useState<string[]>([]);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    let i = 0;
+    const interval = setInterval(() => {
+      if (i < HACKER_LINES.length) {
+        setLines((prev) => [...prev, HACKER_LINES[i]]);
+        i++;
+        if (containerRef.current) {
+          containerRef.current.scrollTop = containerRef.current.scrollHeight;
+        }
+      } else {
+        clearInterval(interval);
+        setTimeout(onDone, 600);
+      }
+    }, 250);
+    return () => clearInterval(interval);
+  }, [onDone]);
+
+  return (
+    <div className="absolute inset-0 flex flex-col items-center justify-center p-8" style={{ background: "#0a0a0a" }}>
+      <div
+        ref={containerRef}
+        className="w-full max-w-xl font-mono text-xs leading-6 overflow-y-auto max-h-80"
+        style={{ color: "#00ff41" }}
+      >
+        {lines.map((line, idx) => (
+          <div key={idx} className="flex gap-2">
+            <span style={{ color: "#00aa30" }}>{">"}</span>
+            <span>{line}</span>
+          </div>
+        ))}
+        <span className="inline-block w-2 h-4 animate-pulse" style={{ background: "#00ff41" }} />
+      </div>
+    </div>
+  );
+};
+
+const InfinityProxy = ({
+  onClose,
+  initialUrl,
+}: {
+  onClose: () => void;
+  initialUrl?: string;
+}) => {
+  const [url, setUrl] = useState(initialUrl || "");
   const [currentUrl, setCurrentUrl] = useState("");
+  const [loading, setLoading] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement>(null);
+
+  const buildProxyUrl = useCallback((target: string) => {
+    return `https://www.croxyproxy.com/servlet/redirect.htm?context=default&servletName=go&url=${encodeURIComponent(target)}`;
+  }, []);
+
+  const navigate = useCallback(
+    (target: string) => {
+      if (!target.trim()) return;
+      let finalTarget = target.trim();
+      if (finalTarget.includes(".") && !finalTarget.includes(" ")) {
+        if (!finalTarget.startsWith("http")) finalTarget = "https://" + finalTarget;
+        setLoading(true);
+        setCurrentUrl(buildProxyUrl(finalTarget));
+      } else {
+        setLoading(true);
+        setCurrentUrl(
+          buildProxyUrl("https://www.google.com/search?q=" + encodeURIComponent(finalTarget))
+        );
+      }
+    },
+    [buildProxyUrl]
+  );
+
+  // Auto-navigate if initialUrl is provided
+  useEffect(() => {
+    if (initialUrl) {
+      navigate(initialUrl);
+    }
+  }, []);
 
   const handleNavigate = (e: React.FormEvent) => {
     e.preventDefault();
-    let target = url.trim();
-    if (!target) return;
-
-    if (target.includes(".") && !target.includes(" ")) {
-      if (!target.startsWith("http")) target = "https://" + target;
-      setCurrentUrl(`https://www.google.com/search?igu=1&q=${encodeURIComponent(target)}`);
-    } else {
-      setCurrentUrl(`https://www.google.com/search?igu=1&q=${encodeURIComponent(target)}`);
-    }
+    navigate(url);
   };
 
   return (
@@ -101,6 +184,8 @@ const InfinityProxy = ({ onClose }: { onClose: () => void }) => {
               Search anything, unblocked.
             </p>
           </div>
+        ) : loading ? (
+          <HackerLoading onDone={() => setLoading(false)} />
         ) : (
           <iframe
             ref={iframeRef}
